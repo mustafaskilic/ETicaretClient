@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent, SpinnerType } from 'src/app/base/base.component';
+import { Create_Product } from 'src/app/contracts/create_product';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
+import { ListComponent } from './list/list.component';
 
 @Component({
   selector: 'app-products',
@@ -17,36 +19,40 @@ export class ProductsComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.showSpinner(SpinnerType.BallGridBeat);
-
-    // this.httpClientService
-    //   .post(
-    //     { controller: 'products' },
-    //     {
-    //       name: 'Kalem',
-    //       stock: 100,
-    //       price: 15,
-    //     }
-    //   )
-    //   .subscribe();
-
-    // this.httpClientService
-    //   .put(
-    //     { controller: 'products' },
-    //     {
-    //       id: '639c0433-170e-4d8a-9aa6-7a2cea16da42',
-    //       name: 'Karpuz',
-    //       stock: 25,
-    //       price: 5.5,
-    //     }
-    //   )
-    //   .subscribe();
-
-    // this.httpClientService
-    //   .delete(
-    //     { controller: 'products' },
-    //     '639c0433-170e-4d8a-9aa6-7a2cea16da42'
-    //   )
-    //   .subscribe();
+    // this.showSpinner(SpinnerType.BallGridBeat);
   }
+  @ViewChild(ListComponent) listComponents: ListComponent;
+
+  createdProduct(createdProduct: Create_Product) {
+    this.listComponents.getProducts();
+  }
+  // this.httpClientService
+  //   .post(
+  //     { controller: 'products' },
+  //     {
+  //       name: 'Kalem',
+  //       stock: 100,
+  //       price: 15,
+  //     }
+  //   )
+  //   .subscribe();
+
+  // this.httpClientService
+  //   .put(
+  //     { controller: 'products' },
+  //     {
+  //       id: '639c0433-170e-4d8a-9aa6-7a2cea16da42',
+  //       name: 'Karpuz',
+  //       stock: 25,
+  //       price: 5.5,
+  //     }
+  //   )
+  //   .subscribe();
+
+  // this.httpClientService
+  //   .delete(
+  //     { controller: 'products' },
+  //     '639c0433-170e-4d8a-9aa6-7a2cea16da42'
+  //   )
+  //   .subscribe();
 }

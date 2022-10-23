@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent, SpinnerType } from 'src/app/base/base.component';
 import { Create_Product } from 'src/app/contracts/create_product';
@@ -7,6 +7,7 @@ import {
   MessageType,
   Position,
 } from 'src/app/services/admin/alertify.service';
+import { FileUploadOptions } from 'src/app/services/common/fileupload/fileupload.component';
 import { ProductService } from 'src/app/services/common/models/product.service';
 
 @Component({
@@ -24,6 +25,15 @@ export class CreateComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  @Output() createdProduct: EventEmitter<Create_Product> = new EventEmitter();
+  @Output() fileUploadOptions: Partial<FileUploadOptions> = {
+    action: 'upload',
+    controller: 'products',
+    explanation: 'Resimleri sürükleyin veya seçin...',
+    isAdminPage: true,
+    accept: '.png, .jpg, .jpeg',
+  };
 
   create(
     name: HTMLInputElement,
@@ -45,6 +55,7 @@ export class CreateComponent extends BaseComponent implements OnInit {
           messageType: MessageType.Success,
           position: Position.Top_Right,
         });
+        this.createdProduct.emit(create_product);
       },
       (errorMessage) => {
         this.alertify.message(errorMessage, {

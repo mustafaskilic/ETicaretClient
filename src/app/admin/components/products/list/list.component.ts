@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import {
@@ -15,6 +15,7 @@ import {
 } from 'src/app/services/admin/alertify.service';
 import { ProductService } from 'src/app/services/common/models/product.service';
 
+declare var $: any;
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -38,26 +39,39 @@ export class ListComponent extends BaseComponent implements OnInit {
     'price',
     'createdDate',
     'updatedDate',
+    'edit',
+    'delete',
   ];
 
   async getProducts() {
     this.showSpinner(SpinnerType.BallClimbingDot);
-    const allProducts: List_Product[] = await this.productService.read(
-      this.paginator ? this.paginator.pageIndex : 0,
-      this.paginator ? this.paginator.pageSize : 5,
-      () => this.hidespinner(SpinnerType.BallClimbingDot),
-      (errorMessage) =>
-        this.alertifyService.message('', {
-          position: Position.Top_Right,
-          messageType: MessageType.Error,
-          dismissOthers: true,
-        })
+    const allProducts: { totalProductCount: number; products: List_Product[] } =
+      await this.productService.read(
+        this.paginator ? this.paginator.pageIndex : 0,
+        this.paginator ? this.paginator.pageSize : 5,
+        () => this.hidespinner(SpinnerType.BallClimbingDot),
+        (errorMessage) =>
+          this.alertifyService.message('', {
+            position: Position.Top_Right,
+            messageType: MessageType.Error,
+            dismissOthers: true,
+          })
+      );
+    this.dataSource = new MatTableDataSource<List_Product>(
+      allProducts.products
     );
-    this.dataSource = new MatTableDataSource<List_Product>(allProducts);
-    this.dataSource.paginator = this.paginator;
+    this.paginator.length = allProducts.totalProductCount;
+
     this.dataSource.sort = this.sort;
   }
-
+  // delete(id, event) {
+  //   alert(id);
+  //   const img: HTMLImageElement = event.srcElement;
+  //   $(img.parentElement.parentElement).fadeOut(2000);
+  // }
+  async pageChanged() {
+    await this.getProducts();
+  }
   dataSource: MatTableDataSource<List_Product> = null;
   async ngOnInit(): Promise<any> {
     await this.getProducts();
