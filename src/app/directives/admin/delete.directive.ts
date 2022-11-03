@@ -65,8 +65,8 @@ export class DeleteDirective {
             },
             this.id
           )
-          .subscribe(
-            (data) => {
+          .subscribe({
+            next: (v) => {
               $(td.parentElement).animate(
                 {
                   opacity: 0,
@@ -75,6 +75,7 @@ export class DeleteDirective {
                 },
                 700,
                 () => {
+                  this.spinner.hide(SpinnerType.BallAtom);
                   this.callback.emit();
                   this.alertifyService.message('Ürün başarıyla silindi', {
                     dismissOthers: true,
@@ -84,15 +85,16 @@ export class DeleteDirective {
                 }
               );
             },
-            (errorResponse: HttpErrorResponse) => {
+            error: (e) => (errorResponse: HttpErrorResponse) => {
               this.spinner.hide(SpinnerType.BallClimbingDot);
               this.alertifyService.message(errorResponse.error, {
                 dismissOthers: true,
                 messageType: MessageType.Error,
                 position: Position.Top_Right,
               });
-            }
-          );
+            },
+            complete: () => {},
+          });
       },
     });
   }
