@@ -2,6 +2,8 @@ import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FileSystemFileEntry, NgxFileDropEntry } from 'ngx-file-drop';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { BaseComponent, SpinnerType } from 'src/app/base/base.component';
 import {
   FileUploadDialogComponent,
   FileUploadDialogState,
@@ -24,14 +26,18 @@ import { HttpClientService } from '../http-client.service';
   templateUrl: './fileupload.component.html',
   styleUrls: ['./fileupload.component.scss'],
 })
-export class FileuploadComponent {
+export class FileuploadComponent extends BaseComponent {
   constructor(
+    spinner: NgxSpinnerService,
     private httpClientService: HttpClientService,
     private alertifyService: AlertifyService,
     private customToastrService: CustomToastrService,
     private dialog: MatDialog,
     private dialogService: DialogService
-  ) {}
+  ) {
+    super(spinner);
+  }
+
   public files: NgxFileDropEntry[];
 
   @Input() options: Partial<FileUploadOptions>;
@@ -49,6 +55,7 @@ export class FileuploadComponent {
       componentType: FileUploadDialogComponent,
       data: FileUploadDialogState.Yes,
       afterClosed: () => {
+        this.showSpinner(SpinnerType.BallGridBeat);
         this.httpClientService
           .post(
             {
@@ -59,8 +66,8 @@ export class FileuploadComponent {
             },
             fileData
           )
-          .subscribe(
-            (data) => {
+          .subscribe({
+            next: (v) => {
               const message: string = 'Dosyalar başarıyla yüklenmiştir.';
               if (this.options.isAdminPage) {
                 this.alertifyService.message(message, {
@@ -75,7 +82,8 @@ export class FileuploadComponent {
                 });
               }
             },
-            (errorResponse: HttpErrorResponse) => {
+            error: (errorResponse: HttpErrorResponse) => {
+              this.hidespinner(SpinnerType.BallGridBeat);
               const message: string =
                 'Dosyalar yüklenirken beklenmeyen hata ile karşılaşılmıştır.';
               if (this.options.isAdminPage) {
@@ -90,8 +98,9 @@ export class FileuploadComponent {
                   position: ToastrPosition.TopRight,
                 });
               }
-            }
-          );
+            },
+            complete: () => this.hidespinner(SpinnerType.BallGridBeat),
+          });
       },
     });
   }
