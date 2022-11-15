@@ -65,7 +65,6 @@ export class ListComponent extends BaseComponent implements OnInit {
       allProducts.products
     );
     this.paginator.length = allProducts.totalProductCount;
-
     this.dataSource.sort = this.sort;
   }
 
