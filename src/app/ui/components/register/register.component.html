@@ -1,0 +1,126 @@
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <form [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
+      <div class="mb-3">
+        <label for="nameSurname" class="form-label">Adı Soyadı</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nameSurname"
+          formControlName="nameSurname"
+          aria-describedby="nameSurnameHelp"
+        />
+        <div
+          id="nameSurnameHelp"
+          class="form-text text-danger"
+          *ngIf="submitted && component.nameSurname?.errors?.required"
+        >
+          *
+        </div>
+        <div
+          id="nameSurnameHelp"
+          class="form-text text-danger"
+          *ngIf="
+            (submitted && component.nameSurname?.errors?.maxlength) ||
+            component.nameSurname?.errors?.minlength
+          "
+        >
+          Lütfen 3 ila 50 karakter arası giriniz
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="userName" class="form-label">Kullanıcı Adı</label>
+        <input
+          type="text"
+          class="form-control"
+          id="userName"
+          formControlName="userName"
+          aria-describedby="userNameHelp"
+        />
+        <div
+          id="userNameHelp"
+          class="form-text text-danger"
+          *ngIf="submitted && component.userName?.errors?.required"
+        >
+          *
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          formControlName="email"
+          placeholder="Email"
+          aria-describedby="emailHelp"
+        />
+        <div
+          id="emailHelp"
+          class="form-text text-danger"
+          *ngIf="submitted && component.email?.errors?.required"
+        >
+          *
+        </div>
+        <div
+          id="emailHelp"
+          class="form-text text-danger"
+          *ngIf="submitted && component.email?.errors?.email"
+        >
+          Güzel gir
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Şifre +</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          formControlName="password"
+          aria-describedby="passwordHelp"
+        />
+        <div
+          id="passwordHelp"
+          class="form-text text-danger"
+          *ngIf="submitted && component.password?.errors?.required"
+        >
+          *
+        </div>
+        <div
+          id="passwordHelp"
+          class="form-text text-danger"
+          *ngIf="submitted && frm.hasError('notSame')"
+        >
+          Uyuşmayan şifre
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="passwordConfirm" class="form-label">Şifre Tekrar +</label>
+        <input
+          type="password"
+          class="form-control"
+          id="passwordConfirm"
+          formControlName="passwordConfirm"
+          aria-describedby="passwordConfirmHelp"
+        />
+        <div
+          id="passwordConfirmHelp"
+          class="form-text text-danger"
+          *ngIf="submitted && component.passwordConfirm?.errors?.required"
+        >
+          *
+        </div>
+        <div
+          id="passwordConfirmHelp"
+          class="form-text text-danger"
+          *ngIf="submitted && frm.hasError('notSame')"
+        >
+          Uyuşmayan şifre
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+    </form>
+  </div>
+  <div class="col-md-3"></div>
+</div>
