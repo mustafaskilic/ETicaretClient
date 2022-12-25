@@ -45,12 +45,28 @@
                 class="nav-link active"
                 aria-current="page"
                 routerLink="register"
+                *ngIf="!authService.isAuthenticated"
                 >Kayıt Ol</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" routerLink="login"
+              <a
+                class="nav-link active"
+                aria-current="page"
+                routerLink="login"
+                *ngIf="!authService.isAuthenticated"
                 >Giriş Yap</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                style="color: red; cursor: pointer"
+                (click)="signOut()"
+                routerLink="login"
+                *ngIf="authService.isAuthenticated"
+                >Çıkıp Yap</a
               >
             </li>
             <li>
@@ -58,10 +74,11 @@
                 class="btn btn-outline-success"
                 type="submit"
                 routerLink="admin"
+                *ngIf="authService.isAuthenticated"
                 >Yönetim Paneli</a
               >
             </li>
-            <li class="nav-item dropdown">
+            <!-- <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
                 href="#"
@@ -82,9 +99,9 @@
             </li>
             <li class="nav-item">
               <a class="nav-link disabled">Disabled</a>
-            </li>
+            </li> -->
           </ul>
-          <form class="d-flex" role="search">
+          <!-- <form class="d-flex" role="search">
             <input
               class="form-control me-2"
               type="search"
@@ -94,7 +111,7 @@
             <button class="btn btn-outline-success" type="submit">
               Search
             </button>
-          </form>
+          </form> -->
         </div>
       </div>
     </nav>
