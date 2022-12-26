@@ -21,7 +21,22 @@
         aria-describedby="passwordHelp"
       />
     </div>
-    <asl-google-signin-button></asl-google-signin-button>
+    <div
+      style="
+        display: flex;
+        row-gap: 10px;
+        justify-content: flex-end;
+        column-gap: 10px;
+      "
+    >
+      <asl-google-signin-button></asl-google-signin-button>
+      <img
+        src="../../../../assets/facebook.png"
+        width="32px"
+        style="cursor: pointer"
+        (click)="facebookLogin()"
+      />
+    </div>
     <button
       type="submit"
       class="btn btn-primary"

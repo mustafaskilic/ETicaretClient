@@ -1,4 +1,7 @@
-import { SocialAuthService } from '@abacritt/angularx-social-login';
+import {
+  FacebookLoginProvider,
+  SocialAuthService,
+} from '@abacritt/angularx-social-login';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -25,28 +28,45 @@ export class LoginComponent extends BaseComponent implements OnInit {
     super(spinner);
     this.socialAuthService.authState.subscribe(async (user) => {
       this.showSpinner(SpinnerType.BallAtom);
-      await this.userService.googleLogin(user, () => {
-        this.authService.identityCheck();
-        this.activatedRoute.queryParams.subscribe((queryParams) => {
-          const returnUrl: string = queryParams['returnUrl'];
-          if (returnUrl) this.router.navigate([returnUrl]);
-        });
-        this.hidespinner(SpinnerType.BallAtom);
-      });
+      switch (user.provider) {
+        case 'GOOGLE':
+          await this.userService.googleLogin(user, () => {
+            this.authService.identityCheck();
+            this.hidespinner(SpinnerType.BallAtom);
+            this.redirectUrl();
+          });
+          break;
+        case 'FACEBOOK':
+          userService.facebookLogin(user, () => {
+            this.authService.identityCheck();
+            this.hidespinner(SpinnerType.BallAtom);
+            this.redirectUrl();
+          });
+          break;
+        default:
+          break;
+      }
     });
   }
 
   ngOnInit(): void {}
 
+  facebookLogin() {
+    this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID);
+  }
+
   async login(usernameOrEmail: string, password: string) {
     this.showSpinner(SpinnerType.BallAtom);
     await this.userService.login(usernameOrEmail, password, () => {
-      this.authService.identityCheck();
-      this.activatedRoute.queryParams.subscribe((queryParams) => {
-        const returnUrl: string = queryParams['returnUrl'];
-        if (returnUrl) this.router.navigate([returnUrl]);
-      });
+      this.redirectUrl();
       this.hidespinner(SpinnerType.BallAtom);
+    });
+  }
+
+  redirectUrl() {
+    this.activatedRoute.queryParams.subscribe((queryParams) => {
+      const returnUrl: string = queryParams['returnUrl'];
+      if (returnUrl) this.router.navigate([returnUrl]);
     });
   }
 }
