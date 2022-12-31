@@ -9,7 +9,7 @@ import { BaseComponent, SpinnerType } from 'src/app/base/base.component';
 import { TokenResponse } from 'src/app/contracts/token/tokenResponse';
 import { AuthService } from 'src/app/services/common/auth.service';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
-import { UserService } from 'src/app/services/common/models/user.service';
+import { UserAuthService } from 'src/app/services/common/models/user-auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +18,7 @@ import { UserService } from 'src/app/services/common/models/user.service';
 })
 export class LoginComponent extends BaseComponent implements OnInit {
   constructor(
-    private userService: UserService,
+    private userAuthService: UserAuthService,
     spinner: NgxSpinnerService,
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
@@ -30,14 +30,14 @@ export class LoginComponent extends BaseComponent implements OnInit {
       this.showSpinner(SpinnerType.BallAtom);
       switch (user.provider) {
         case 'GOOGLE':
-          await this.userService.googleLogin(user, () => {
+          await this.userAuthService.googleLogin(user, () => {
             this.authService.identityCheck();
             this.hidespinner(SpinnerType.BallAtom);
             this.redirectUrl();
           });
           break;
         case 'FACEBOOK':
-          userService.facebookLogin(user, () => {
+          userAuthService.facebookLogin(user, () => {
             this.authService.identityCheck();
             this.hidespinner(SpinnerType.BallAtom);
             this.redirectUrl();
@@ -57,7 +57,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   async login(usernameOrEmail: string, password: string) {
     this.showSpinner(SpinnerType.BallAtom);
-    await this.userService.login(usernameOrEmail, password, () => {
+    await this.userAuthService.login(usernameOrEmail, password, () => {
       this.redirectUrl();
       this.hidespinner(SpinnerType.BallAtom);
     });

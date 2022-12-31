@@ -67,7 +67,6 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   async onSubmit(user: User) {
     this.submitted = true;
     if (this.frm.invalid) return;
-    debugger;
     const result: Create_User = await this.userService.create(user);
     if (result.succeeded)
       this.toastrService.message(result.message, 'Kullanıcı kaydı başarılı', {
