@@ -27,7 +27,9 @@ export class HttpClientService {
         requestParameter.queryString ? `?${requestParameter.queryString}` : ''
       }`;
 
-    return this.httpClient.get<T>(url, { headers: requestParameter.headers });
+    return this.httpClient.get<T>(url, {
+      headers: requestParameter.headers,
+    });
   }
   post<T>(
     requestParameter: Partial<RequestParameters>,

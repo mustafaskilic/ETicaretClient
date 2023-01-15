@@ -58,6 +58,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
   async login(usernameOrEmail: string, password: string) {
     this.showSpinner(SpinnerType.BallAtom);
     await this.userAuthService.login(usernameOrEmail, password, () => {
+      this.authService.identityCheck();
       this.redirectUrl();
       this.hidespinner(SpinnerType.BallAtom);
     });

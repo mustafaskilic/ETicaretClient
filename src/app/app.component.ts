@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './services/common/auth.service';
+import { HttpClientService } from './services/common/http-client.service';
 import {
   CustomToastrService,
   ToastrMessageType,
@@ -17,13 +18,22 @@ export class AppComponent {
   constructor(
     public authService: AuthService,
     private toastrService: CustomToastrService,
-    private router: Router
+    private router: Router,
+    private httpClientService: HttpClientService
   ) {
+    this.httpClientService
+      .get({
+        controller: 'baskets',
+      })
+      .subscribe((data) => {
+        debugger;
+      });
     authService.identityCheck();
   }
 
   signOut() {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     this.authService.identityCheck();
     this.router.navigate(['']);
     this.toastrService.message('Oturum kapatılmıştır!', 'Oturum Kapatıldı', {

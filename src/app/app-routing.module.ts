@@ -27,6 +27,7 @@ const routes: Routes = [
           ),
         canActivate: [AuthGuard],
       },
+
       {
         path: 'orders',
         loadChildren: () =>
@@ -48,6 +49,13 @@ const routes: Routes = [
   },
   {
     path: 'products',
+    loadChildren: () =>
+      import('./ui/components/products/products.module').then(
+        (module) => module.ProductsModule
+      ),
+  },
+  {
+    path: 'products/:pageNo',
     loadChildren: () =>
       import('./ui/components/products/products.module').then(
         (module) => module.ProductsModule

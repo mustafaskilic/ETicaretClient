@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ProductsComponent } from './products.component';
 import { RouterModule } from '@angular/router';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ListComponent } from './list/list.component';
 @NgModule({
-  declarations: [ProductsComponent],
+  declarations: [ProductsComponent, ListComponent],
   imports: [
     CommonModule,
     MatDialogModule,

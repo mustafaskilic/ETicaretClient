@@ -3,9 +3,11 @@ import { MatCard } from '@angular/material/card';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SpinnerType } from 'src/app/base/base.component';
+import { BaseUrl } from 'src/app/contracts/base-url';
 import { List_Product_Image } from 'src/app/contracts/list_product_image';
 import { DialogService } from 'src/app/services/common/dialog.service';
 import { FileUploadOptions } from 'src/app/services/common/fileupload/fileupload.component';
+import { FileService } from 'src/app/services/common/models/file.service';
 import { ProductService } from 'src/app/services/common/models/product.service';
 import { BaseDialog } from '../base/basedialog';
 import {
@@ -28,15 +30,18 @@ export class SelectProductImageDialogComponent
     @Inject(MAT_DIALOG_DATA) public data: SelectProductImageState | string,
     private productService: ProductService,
     private spinner: NgxSpinnerService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private fileService: FileService
   ) {
     super(dialogRef);
   }
 
   images: List_Product_Image[];
+  baseUrl: BaseUrl;
   async ngOnInit() {
+    this.baseUrl = await this.fileService.getBaseStorageUrl();
     this.spinner.show(SpinnerType.BallAtom);
-    this.images = await this.productService.redImages(
+    this.images = await this.productService.readImages(
       this.data as string,
       () => {
         this.spinner.hide(SpinnerType.BallAtom);
@@ -62,6 +67,17 @@ export class SelectProductImageDialogComponent
         );
       },
     });
+  }
+
+  showCase(imageId: string) {
+    this.spinner.show(SpinnerType.BallAtom);
+    this.productService.changeShowcaseImage(
+      imageId,
+      this.data as string,
+      () => {
+        this.spinner.hide(SpinnerType.BallAtom);
+      }
+    );
   }
 
   @Output() options: Partial<FileUploadOptions> = {

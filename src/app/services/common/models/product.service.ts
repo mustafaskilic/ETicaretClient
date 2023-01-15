@@ -51,7 +51,7 @@ export class ProductService {
     const promiseData: Promise<{
       totalProductCount: number;
       products: List_Product[];
-    }> = lastValueFrom(
+    }> = firstValueFrom(
       this.httpClientService.get<{
         totalProductCount: number;
         products: List_Product[];
@@ -82,7 +82,7 @@ export class ProductService {
     await firstValueFrom(deleteObservable);
   }
 
-  async redImages(
+  async readImages(
     id: string,
     successCallBack?: () => void
   ): Promise<List_Product_Image[]> {
@@ -110,5 +110,20 @@ export class ProductService {
     );
     successCallBack();
     await firstValueFrom(deleteObservable);
+  }
+
+  async changeShowcaseImage(
+    imageId: string,
+    productId: string,
+    successCallBack?: () => void
+  ): Promise<void> {
+    const changeShowcaseImageObservable = this.httpClientService.get({
+      controller: 'products',
+      action: 'changeshowcaseimage',
+      queryString: `productImageId=${imageId}&productId=${productId}`,
+    });
+
+    await firstValueFrom(changeShowcaseImageObservable);
+    successCallBack();
   }
 }
