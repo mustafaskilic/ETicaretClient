@@ -35,11 +35,11 @@
                 >Ürünler</a
               >
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link active" aria-current="page" routerLink="basket"
                 >Sepet</a
               >
-            </li>
+            </li> -->
             <li class="nav-item">
               <a
                 class="nav-link active"
@@ -112,6 +112,16 @@
               Search
             </button>
           </form> -->
+          <div class="d-flex">
+            <button
+              class="btn btn-outline-success"
+              type="submit"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              Sepet
+            </button>
+          </div>
         </div>
       </div>
     </nav>
@@ -128,3 +138,5 @@
 <ngx-spinner name="s1" type="ball-grid-beat"></ngx-spinner>
 <ngx-spinner name="s2" type="ball-atom"></ngx-spinner>
 <ngx-spinner name="s3" type="ball-climbing-dot"></ngx-spinner>
+
+<app-baskets></app-baskets>

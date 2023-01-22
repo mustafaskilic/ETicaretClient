@@ -21,24 +21,6 @@ import { HttpErrorHandlerInterceptorService } from './services/common/http-error
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
-
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    AdminModule,
-    UiModule,
-    ToastrModule.forRoot(),
-    NgxSpinnerModule,
-    HttpClientModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: () => localStorage.getItem('accessToken'),
-        allowedDomains: ['localhost:7201'],
-      },
-    }),
-    SocialLoginModule,
-  ],
   providers: [
     { provide: 'baseUrl', useValue: 'https://localhost:7201/api', multi: true },
     {
@@ -67,5 +49,22 @@ import { HttpErrorHandlerInterceptorService } from './services/common/http-error
     },
   ],
   bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    AdminModule,
+    UiModule,
+    ToastrModule.forRoot(),
+    NgxSpinnerModule,
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem('accessToken'),
+        allowedDomains: ['localhost:7201'],
+      },
+    }),
+    SocialLoginModule,
+  ],
 })
 export class AppModule {}
