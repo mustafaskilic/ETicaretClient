@@ -118,6 +118,7 @@
               type="submit"
               data-bs-toggle="modal"
               data-bs-target="#exampleModal"
+              (click)="loadComponent()"
             >
               Sepet
             </button>
@@ -139,4 +140,15 @@
 <ngx-spinner name="s2" type="ball-atom"></ngx-spinner>
 <ngx-spinner name="s3" type="ball-climbing-dot"></ngx-spinner>
 
-<app-baskets></app-baskets>
+<!-- <app-baskets></app-baskets> -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl">
+    <ng-template appDynamicLoadComponent> </ng-template>
+  </div>
+</div>
