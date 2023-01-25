@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HubConnection } from '@microsoft/signalr';
 import { HubConnectionState } from '@microsoft/signalr/dist/esm/HubConnection';
 import { HubConnectionBuilder } from '@microsoft/signalr/dist/esm/HubConnectionBuilder';
@@ -7,52 +7,49 @@ import { HubConnectionBuilder } from '@microsoft/signalr/dist/esm/HubConnectionB
   providedIn: 'root',
 })
 export class SignalRService {
-  private _connection: HubConnection;
-  get connection(): HubConnection {
-    return this._connection;
-  }
-  start(hubUrl: string) {
-    if (
-      !this._connection ||
-      this._connection?.state == HubConnectionState.Disconnected
-    ) {
-      const builder: HubConnectionBuilder = new HubConnectionBuilder();
+  constructor(@Inject('baseSignalRUrl') private baseSignalRUrl: string) {}
 
-      const hubConnection: HubConnection = builder
-        .withUrl(hubUrl)
-        .withAutomaticReconnect()
-        .build();
+  private start(hubUrl: string) {
+    hubUrl = this.baseSignalRUrl + hubUrl;
 
-      hubConnection
-        .start()
-        .then(() => {
-          console.log('Connected');
-        })
-        .catch((error) => setTimeout(() => this.start(hubUrl), 2000));
+    const builder: HubConnectionBuilder = new HubConnectionBuilder();
 
-      this._connection = hubConnection;
-    }
+    const hubConnection: HubConnection = builder
+      .withUrl(hubUrl)
+      .withAutomaticReconnect()
+      .build();
 
-    this._connection.onreconnected((connectionId) =>
-      console.log('Reconnected')
-    );
-    this._connection.onreconnecting((error) => console.log('Reconnecting'));
-    this._connection.onclose((error) => console.log('Close reconnection'));
+    hubConnection
+      .start()
+      .then(() => {
+        console.log('Connected');
+      })
+      .catch((error) => setTimeout(() => this.start(hubUrl), 2000));
+
+    hubConnection.onreconnected((connectionId) => console.log('Reconnected'));
+    hubConnection.onreconnecting((error) => console.log('Reconnecting'));
+    hubConnection.onclose((error) => console.log('Close reconnection'));
+    return hubConnection;
   }
 
   invoke(
+    hubUrl: string,
     procedureName: string,
     message: any,
     successCallBack?: (value) => void,
     errorCallBack?: (error) => void
   ) {
-    this._connection
+    this.start(hubUrl)
       .invoke(procedureName, message)
       .then(successCallBack)
       .catch(errorCallBack);
   }
 
-  on(procedureName: string, callBack: (...message: any) => void) {
-    this._connection.on(procedureName, callBack);
+  on(
+    hubUrl: string,
+    procedureName: string,
+    callBack: (...message: any) => void
+  ) {
+    this.start(hubUrl).on(procedureName, callBack);
   }
 }

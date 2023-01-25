@@ -39,9 +39,9 @@
               "node_modules/ngx-spinner/animations/ball-climbing-dot.css"
             ],
             "scripts": [
-              "node_modules/alertifyjs/build/alertify.min.js",
+              "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "node_modules/jquery/dist/jquery.min.js"
+              "node_modules/alertifyjs/build/alertify.min.js"
             ]
           },
           "configurations": {
