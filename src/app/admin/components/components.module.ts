@@ -5,8 +5,6 @@ import { OrdersModule } from './orders/orders.module';
 import { CustomersModule } from './customers/customers.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 
-
-
 @NgModule({
   declarations: [],
   imports: [
@@ -14,7 +12,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     ProductsModule,
     OrdersModule,
     CustomersModule,
-    DashboardModule
-  ]
+    DashboardModule,
+  ],
 })
-export class ComponentsModule { }
+export class ComponentsModule {}

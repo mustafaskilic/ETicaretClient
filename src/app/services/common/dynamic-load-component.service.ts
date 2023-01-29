@@ -23,7 +23,7 @@ export class DynamicLoadComponentService {
       default:
         break;
     }
-    console.info(_component);
+    viewContainerRef.clear();
     return viewContainerRef.createComponent(_component);
   }
 }
