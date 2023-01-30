@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AdminModule } from './admin/admin.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -53,6 +53,10 @@ import { DynamicLoadComponentDirective } from './directives/common/dynamic-load-
       useClass: HttpErrorHandlerInterceptorService,
       multi: true,
     },
+    // {
+    //   provide: LOCALE_ID,
+    //   useValue: 'tr-TR',
+    // },
   ],
   bootstrap: [AppComponent],
   imports: [
